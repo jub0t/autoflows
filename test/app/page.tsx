@@ -3,9 +3,9 @@
 import { useState, useCallback } from 'react';
 import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Panel } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import Autoflows, { NodeBuilder } from "../../src/core/builder"
+import { Node } from "../../src/core/builder"
+import { AutoflowsBuilder } from "../../src/core/client/builder"
 import { BOOLEAN, STRING } from '../../src/core/datatypes';
-import { NodeField } from '../../src/core/field';
 
 const initialEdges = [{ id: 'n1-n2', source: 'n1', target: 'n2' }];
 const initialNodes = [
@@ -32,21 +32,16 @@ export default function Home() {
     [],
   );
 
-  // Client-side node building...
-  const node = new NodeBuilder(
-    "condition",
+
+  const myNode = new Node(
+    { name: "sendEmail", description: "Send an email" },
     [
-      { key: "id", type: STRING, required: false },
-      { key: "success", type: BOOLEAN, required: false }
-    ] as const
+      { key: "to", type: String, required: true },
+      { key: "subject", type: String, required: true }
+    ]
   );
 
-  // Server-side Virtual Machine...
-  const autoflows = new Autoflows()
-    .add(node)
-    .define("condition", {
-      onExecute: () => { }
-    });
+  const builder = new AutoflowsBuilder().add(myNode)
 
   return (
     <div style={{ backgroundColor: "#e1e1e1", width: '100vw', height: '100vh' }}>
@@ -69,7 +64,7 @@ export default function Home() {
 
         <Panel position="top-left" className="p-4 h-full max-w-[300px] max-h-[700px] w-full rounded-md flex flex-wrap">
           <div className="p-3 bg-white w-full text-slate-800 rounded-md">
-            {autoflows.nodes.map((node, index) => (
+            {builder.nodes.map((node, index) => (
               <div
                 key={index}
                 className="flex items-center gap-3 w-full p-3 border border-gray-200 cursor-pointer rounded-md bg-white"
@@ -95,9 +90,9 @@ export default function Home() {
 
                 {/* Text */}
                 <div className="flex flex-col">
-                  <h2 className="font-semibold text-sm">{"Node Name"}</h2>
+                  <h2 className="font-semibold text-sm">{node.name}</h2>
                   <p className="text-xs text-gray-600">
-                    {"Lorem ipsum dolor sit amet consectetur adipisicing elit."}
+                    {node.description}
                   </p>
                 </div>
               </div>

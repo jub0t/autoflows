@@ -4,7 +4,7 @@ A framework/library to build embeddable Workflows for your web-app quickly.
 
 ```ts
   // Client-side node building...
-  const node = new NodeBuilder(
+  const node = new Node(
     "condition",
     [
       { key: "id", type: STRING, required: false },
@@ -19,3 +19,9 @@ A framework/library to build embeddable Workflows for your web-app quickly.
       onExecute: () => { }
     });
 ```
+
+
+## Contribution
+
+- Entrypoint directory starts at `/src`
+- For client-side testing use `cd test` followed by `npm run dev`.
