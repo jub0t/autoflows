@@ -3,9 +3,10 @@
 import { useState, useCallback } from 'react';
 import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Panel, NodeChange, EdgeChange } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { Node } from "../../src/core/builder"
+import { Node, SchemaField } from "../../src/core/builder"
 import { AutoflowsBuilder } from "../../src/core/client/builder"
 import { randomBytes } from 'crypto';
+import { STRING } from '../../src/core/datatypes';
 
 const initialEdges = [{ id: 'n1-n2', source: 'n1', target: 'n2' }];
 const initialNodes: any[] | (() => any[]) = [];
@@ -35,8 +36,7 @@ export default function Home() {
       options: { name: "Cronjob", label: "Cron Job", description: "Execute precisely timed actions." },
       schema: {
         output: [
-          { key: "to", type: String, required: true },
-          { key: "subject", type: String, required: true }
+          { key: "subject", type: STRING, },
         ],
       }
     },
@@ -46,10 +46,7 @@ export default function Home() {
     {
       options: { name: "Mail", label: "Mail", description: "Send an E-mail." },
       schema: {
-        input: [
-          { key: "to", type: String, required: true },
-          { key: "subject", type: String, required: true }
-        ],
+        input: [],
       }
     },
   );
