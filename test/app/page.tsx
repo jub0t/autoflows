@@ -1,52 +1,63 @@
 "use client"
 
 import { useState, useCallback } from 'react';
-import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Panel } from '@xyflow/react';
+import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Panel, NodeChange, EdgeChange } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Node } from "../../src/core/builder"
 import { AutoflowsBuilder } from "../../src/core/client/builder"
-import { BOOLEAN, STRING } from '../../src/core/datatypes';
+import { randomBytes } from 'crypto';
 
 const initialEdges = [{ id: 'n1-n2', source: 'n1', target: 'n2' }];
-const initialNodes = [
-  { id: 'n1', position: { x: 0, y: 0 }, data: { label: 'Node 1' } },
-  { id: 'n2', position: { x: 0, y: 100 }, data: { label: 'Node 2' } },
-];
+const initialNodes: any[] | (() => any[]) = [];
 
 export default function Home() {
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
 
   const onNodesChange = useCallback(
-    (changes) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
+    (changes: NodeChange<any>[]) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
     [],
   );
 
   const onEdgesChange = useCallback(
-    (changes) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
+    (changes: EdgeChange<{ id: string; source: string; target: string; }>[]) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
     [],
   );
 
   const onConnect = useCallback(
-    (params) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
+    (params: any) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
     [],
   );
 
 
-  const myNode = new Node(
+  const Cronjob = new Node(
     {
       options: { name: "Cronjob", label: "Cron Job", description: "Execute precisely timed actions." },
+      schema: {
+        output: [
+          { key: "to", type: String, required: true },
+          { key: "subject", type: String, required: true }
+        ],
+      }
+    },
+  );
+
+  const Mailer = new Node(
+    {
+      options: { name: "Mail", label: "Mail", description: "Send an E-mail." },
       schema: {
         input: [
           { key: "to", type: String, required: true },
           { key: "subject", type: String, required: true }
         ],
       }
-    }
+    },
   );
 
   // Client-side (React) builder.
-  const builder = new AutoflowsBuilder().add(myNode)
+  const builder = new AutoflowsBuilder()
+    .add(Cronjob)
+    .add(Mailer)
 
   return (
     <div style={{ backgroundColor: "#e1e1e1", width: '100vw', height: '100vh' }}>
@@ -68,36 +79,25 @@ export default function Home() {
         </Panel>
 
         <Panel position="top-left" className="p-4 h-full max-w-[300px] max-h-[700px] w-full rounded-md flex flex-wrap">
-          <div className="p-3 bg-white w-full text-slate-800 rounded-md">
+          <div className="p-3 bg-white w-full space-y-2 text-slate-800 rounded-md">
             {builder.nodes.map((node, index) => (
               <div
+                onClick={() => {
+                  setNodes(prev => {
+                    return [
+                      ...prev,
+                      { id: randomBytes(8).toString("hex"), position: { x: 0, y: 0 }, data: { label: node.options.label || node.options.name } },
+                    ]
+                  })
+                }}
                 key={index}
                 className="flex items-center gap-3 w-full p-3 border border-gray-200 cursor-pointer rounded-md bg-white"
               >
-                {/* Icon */}
-                <div className="flex items-center justify-center min-w-10 h-10 bg-blue-500 rounded-md text-white">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="lucide lucide-banana"
-                  >
-                    <path d="M4 13c3.5-2 8-2 10 2a5.5 5.5 0 0 1 8 5" />
-                    <path d="M5.15 17.89c5.52-1.52 8.65-6.89 7-12C11.55 4 11.5 2 13 2c3.22 0 5 5.5 5 8 0 6.5-4.2 12-10.49 12C5.11 22 2 22 2 20c0-1.5 1.14-1.55 3.15-2.11Z" />
-                  </svg>
-                </div>
-
                 {/* Text */}
                 <div className="flex flex-col">
-                  <h2 className="font-semibold text-sm">{node.name}</h2>
+                  <h2 className="font-semibold text-sm">{node.options.label || node.options.name}</h2>
                   <p className="text-xs text-gray-600">
-                    {node.description}
+                    {node.options.description}
                   </p>
                 </div>
               </div>
