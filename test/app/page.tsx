@@ -34,13 +34,18 @@ export default function Home() {
 
 
   const myNode = new Node(
-    { name: "sendEmail", description: "Send an email" },
-    [
-      { key: "to", type: String, required: true },
-      { key: "subject", type: String, required: true }
-    ]
+    {
+      options: { name: "Cronjob", label: "Cron Job", description: "Execute precisely timed actions." },
+      schema: {
+        input: [
+          { key: "to", type: String, required: true },
+          { key: "subject", type: String, required: true }
+        ],
+      }
+    }
   );
 
+  // Client-side (React) builder.
   const builder = new AutoflowsBuilder().add(myNode)
 
   return (

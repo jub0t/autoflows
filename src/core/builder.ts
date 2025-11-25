@@ -9,16 +9,21 @@ export type SchemaItem = {
 export interface NodeOptions {
     name: string;
     description: string;
+    label?: string;
 }
 
 export class Node {
-    name: string;
-    description: string;
-    schema: SchemaItem[];
+    options: NodeOptions;
 
-    constructor(options: NodeOptions, schema: SchemaItem[]) {
-        this.name = options.name;
-        this.description = options.description;
-        this.schema = schema;
+    input_schema?: SchemaItem[] | undefined;
+    output_schema?: SchemaItem[] | undefined;
+
+    constructor(args: { options: NodeOptions, schema: { input?: SchemaItem[]; output?: SchemaItem[] } }) {
+        // Misc data
+        this.options = args.options;
+
+        // Schemas
+        this.output_schema = args.schema?.output;
+        this.input_schema = args.schema?.input;
     }
 }
