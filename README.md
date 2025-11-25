@@ -25,7 +25,7 @@ import { CronNode }from "shared/schema.ts"
 // Server-side Virtual Machine...
 const autoflows = new Autoflows()
   .add(CronNode)
-  .define("condition", {
+  .define("Cronjob", {
     onAct: (data) => { }
   });
 ```
