@@ -5,36 +5,65 @@ A framework/library to build embeddable Workflows for your web-app quickly.
 ```ts
 // shared/schema.ts
 
-export const CronNode = new Node(
+export const Start = new Node(
   {
-    options: { name: "Cronjob", label: "Cron Job", description: "Execute precisely timed actions." },
+    options: { name: "Start", label: "Start", description: "The event that starts it all." },
     schema: {
-      output: [
-        { key: "date", type: DATE },
-      ],
+      output: [],
+      input: [],
     }
-  }
+  },
+);
+
+export const Exit = new Node(
+  {
+    options: { name: "Exit", label: "Exit", description: "Use this node to terminate the workflow." },
+    schema: {
+      output: [],
+      input: [],
+    }
+  },
+);
+
+export const Mailer = new Node(
+  {
+    options: { name: "Mail", label: "Mail", description: "Send an E-mail." },
+    schema: {
+      output: [],
+      input: [],
+    }
+  },
 );
 ```
 
 ```ts
 // server/index.ts
-import { CronNode }from "shared/schema.ts"
+import { Start, Exit, Mailer }from "shared/schema.ts"
 
 // Server-side Virtual Machine...
 const autoflows = new Autoflows()
-  .add(CronNode)
-  .define("Cronjob", {
+  .define(Start, {
+    onAct: (data) => { }
+  })
+  .define(Mailer, {
+    onAct: (data) => { }
+  });
+  .define(Exit, {
     onAct: (data) => { }
   });
 ```
 
 ```ts
-import { CronNode }from "shared/schema.ts"
+import { Start, Exit, Mailer }from "shared/schema.ts"
 
 // Client-side (React) builder.
-const builder = new AutoflowsBuilder().add(myNode)
+  const builder = new AutoflowsBuilder()
+    .add(Start)
+    .add(Exit)
+    .add(Mailer)
 ```
+
+![Preview](./preview.png)
 
 ## Contribution
 

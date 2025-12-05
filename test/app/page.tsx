@@ -32,13 +32,22 @@ export default function Home() {
   );
 
 
-  const Cronjob = new Node(
+  const Start = new Node(
     {
-      options: { name: "Cronjob", label: "Cron Job", description: "Execute precisely timed actions." },
+      options: { name: "Start", label: "Start", description: "The event that starts it all." },
       schema: {
-        output: [
-          { key: "subject", type: STRING, },
-        ],
+        output: [],
+        input: [],
+      }
+    },
+  );
+
+  const Exit = new Node(
+    {
+      options: { name: "Exit", label: "Exit", description: "Use this node to terminate the workflow." },
+      schema: {
+        output: [],
+        input: [],
       }
     },
   );
@@ -55,7 +64,8 @@ export default function Home() {
 
   // Client-side (React) builder.
   const builder = new AutoflowsBuilder()
-    .add(Cronjob)
+    .add(Start)
+    .add(Exit)
     .add(Mailer)
 
   return (
