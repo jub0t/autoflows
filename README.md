@@ -69,3 +69,10 @@ import { Start, Exit, Mailer }from "shared/schema.ts"
 
 - Entrypoint directory starts at `/src`
 - For client-side testing use `cd test` followed by `npm run dev`.
+
+## Roadmap
+
+- [ ] Clean, embeddable, extendable UI-interface.
+- [ ] APIs to implement custom Custom Server-logic.
+- [ ] Workflow saving and tracking (database).
+- [ ] Reliable data passing between nodes.
