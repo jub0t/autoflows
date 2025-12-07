@@ -75,4 +75,4 @@ import { Start, Exit, Mailer }from "shared/schema.ts"
 - [ ] Clean, embeddable, extendable UI-interface.
 - [ ] APIs to implement custom Custom Server-logic.
 - [ ] Workflow saving and tracking (database).
-- [ ] Reliable data passing between nodes.
+- [ ] Reliable (type-validated) data passing between nodes.

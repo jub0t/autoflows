@@ -1,40 +1,42 @@
+import { SchemaType } from "./datatypes";
+
 // Node.ts --------------------------------------------------
-import { FieldTypes } from "./field"
-export type SchemaFieldOptions = {
-    key: string;
-    type: new () => FieldTypes;
-    nullable?: boolean;
-};
-
-export class SchemaField {
-    options: SchemaFieldOptions;
-    constructor(options: SchemaFieldOptions) {
-        this.options = options;
-    };
-
-    set(value: FieldTypes | string | number | boolean | object) {
-
-    }
+export enum NodeTraits {
+    IS_ROOT,
+    IS_TERMINAL,
 }
 
 export interface NodeOptions {
     name: string;
     description: string;
     label?: string;
+    category?: string | null
+
+    // Settings
+    traits?: NodeTraits[]
+
+    // JSX
+    icon?: React.JSX.Element,
 }
 
-export class Node {
+export class Node<T> {
     options: NodeOptions;
 
-    input_schema?: SchemaField[] | undefined;
-    output_schema?: SchemaField[] | undefined;
+    input_schema?: SchemaType<T>[] | undefined;
+    output_schema?: SchemaType<T>[] | undefined;
 
-    constructor(args: { options: NodeOptions, schema: { input?: SchemaFieldOptions[]; output?: SchemaFieldOptions[] } }) {
+    constructor(args: {
+        options: NodeOptions,
+        schema: {
+            input?: SchemaType<T>[];
+            output?: SchemaType<T>[]
+        }
+    }) {
         // Misc data
         this.options = args.options;
 
         // Schemas
-        this.output_schema = args.schema?.output?.map((field) => new SchemaField(field));
-        this.input_schema = args.schema?.input?.map((field) => new SchemaField(field));
+        this.output_schema = args.schema?.output
+        this.input_schema = args.schema?.input
     }
 }

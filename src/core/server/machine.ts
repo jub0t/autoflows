@@ -10,7 +10,7 @@ export class AutoflowsMachine {
 
     // Add a node
     add(node: Node) {
-        this.nodes.set(node.name, node);
+        this.nodes.set(node?.options.name, node);
         return this;
     }
 
