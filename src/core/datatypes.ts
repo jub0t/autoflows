@@ -6,9 +6,10 @@ export enum PrimitiveTypes {
     Boolean,
     Object,
     Array,
+    Blob,
 };
 
-export type SchemaType<T> = STRING | NUMBER | BOOLEAN | OBJECT<T> | ARRAY<T>
+export type SchemaType = STRING | NUMBER | BOOLEAN | OBJECT | ARRAY
 
 class Primitive {
     unique_id = crypto.randomBytes(8).toString("hex");
@@ -57,12 +58,12 @@ export class BOOLEAN extends Primitive {
 }
 
 // todo()!
-export class ARRAY<T> extends Primitive {
+export class ARRAY extends Primitive {
     type = PrimitiveTypes.Array
-    value?: Array<T> | null;
+    value?: SchemaType[] | null;
     key: string;
 
-    constructor(key: string, value?: Array<T> | null) {
+    constructor(key: string, value?: SchemaType[] | null) {
         super();
         this.key = key;
         this.value = value;
@@ -70,19 +71,33 @@ export class ARRAY<T> extends Primitive {
 }
 
 // todo()!
-export class OBJECT<T> extends Primitive {
+export class OBJECT extends Primitive {
     type = PrimitiveTypes.Object
-    value?: Record<string, SchemaType<T>> | null;
+    fields: SchemaType[] = [];
     key: string;
 
-    constructor(key: string, value?: Record<string, SchemaType<T>> | null) {
+    constructor(key: string, fields?: SchemaType[]) {
         super();
         this.key = key;
-        this.value = value;
+        this.fields = fields || [];
     }
 
-    set(value?: Record<string, SchemaType<T>> | null) {
-        this.value = value;
+    set(fields?: SchemaType[]) {
+        this.fields = fields || [];
+    }
+}
+
+// todo()!
+export class BLOB extends Primitive {
+    type = PrimitiveTypes.Blob
+    key: string;
+
+    constructor(key: string) {
+        super();
+        this.key = key;
+    }
+
+    set(value: Blob) {
     }
 }
 
@@ -92,4 +107,5 @@ export const DataTypes = {
     BOOLEAN,
     ARRAY,
     OBJECT,
+    BLOB,
 }

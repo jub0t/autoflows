@@ -20,17 +20,17 @@ export interface NodeOptions {
     icon?: React.JSX.Element,
 }
 
-export class Node<T> {
+export class Node {
     options: NodeOptions;
 
-    input_schema?: SchemaType<T>[] | undefined;
-    output_schema?: SchemaType<T>[] | undefined;
+    input_schema?: SchemaType[] | undefined;
+    output_schema?: SchemaType[] | undefined;
 
     constructor(args: {
         options: NodeOptions,
         schema: {
-            input?: SchemaType<T>[];
-            output?: SchemaType<T>[]
+            input?: SchemaType[];
+            output?: SchemaType[]
         }
     }) {
         // Misc data

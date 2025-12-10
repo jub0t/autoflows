@@ -9,11 +9,15 @@ export default function BasicNode(props: any) {
 
 
         <div className="flex flex-wrap justify-start items-center space-x-3">
-            {props.data.icon && <div className="w-7 h-9 rounded-lg flex flex-wrap items-center justify-center bg-opacity-60">
-                {props.data.icon}
-            </div>}
-            <div>
-                <h1 className="font-semibold">{props.data.label}</h1>
+            <div className="w-full flex flex-wrap items-center space-x-1 text-xs">
+                {props.data.icon && <div className="rounded-lg flex flex-wrap items-center justify-center bg-opacity-60">
+                    {props.data.icon}
+                </div>}
+
+                <h1 className="font-semibold text-xs">{props.data.label}</h1>
+            </div>
+
+            <div className="w-full mt-5">
                 <p className="text-xs opacity-80">{props.id}</p>
             </div>
         </div>

@@ -1,9 +1,5 @@
 export class Trait {
-    constructor(name: string, options: { validator: () => boolean }) { }
+    constructor(name: string) { }
 }
 
-new Trait("is_root", {
-    validator: () => {
-        return 1 === 1
-    }
-})
+new Trait("is_root")
