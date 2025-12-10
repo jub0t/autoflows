@@ -4,7 +4,8 @@ import { NodeTraits } from "../../../../src/core/builder";
 
 export default function BasicNode(props: any) {
     const traits = props.data?.traits || [];
-    return <div className={`${traits.includes(NodeTraits.IS_ROOT) || traits.includes(NodeTraits.IS_TERMINAL) ? '' : ''} border border-gray-200 bg-white cursor-pointer rounded-xl py-3 px-4`}>
+    return <div onClick={() => {
+    }} className={`${traits.includes(NodeTraits.IS_ROOT) || traits.includes(NodeTraits.IS_TERMINAL) ? '' : ''} border border-gray-200 bg-white cursor-pointer rounded-xl py-3 px-4`}>
 
 
         <div className="flex flex-wrap justify-start items-center space-x-3">

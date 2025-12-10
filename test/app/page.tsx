@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Panel, NodeChange, EdgeChange, Background } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { Node, NodeTraits, SchemaField } from "../../src/core/builder"
+import { Node, NodeTraits } from "../../src/core/builder"
 import { AutoflowsBuilder } from "../../src/core/client/builder"
 import { randomBytes } from 'crypto';
 import BasicNode from "./ui/nodes/BasicNode"
@@ -31,6 +31,8 @@ export default function Home() {
     [],
   );
 
+  const [selectedNode, selectNode] = useState<string | null>(null)
+
   const Start = new Node(
     {
       options: {
@@ -45,8 +47,6 @@ export default function Home() {
             />
           </svg>
         ),
-
-
         traits: [NodeTraits.IS_ROOT], category: "Misc", name: "Start", label: "Start", description: "The event that starts it all."
       },
       schema: {

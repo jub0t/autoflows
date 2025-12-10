@@ -16,6 +16,7 @@ export interface NodeOptions {
     traits?: NodeTraits[]
 
     // JSX
+    // TODO: Get rid of this later, keep it for now
     icon?: React.JSX.Element,
 }
 
